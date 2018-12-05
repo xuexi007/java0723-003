@@ -38,4 +38,8 @@ public class StuController {
 		
 		return listp;
 	}
+	
+	public void qqq(){
+		System.out.println("新增qqq");
+	}
 }
