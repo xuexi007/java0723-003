@@ -21,4 +21,9 @@ public class ScController {
 		
 		return service.getAllByDate(begin_date, end_date);
 	}
+	
+	public void www(){
+		
+		System.out.println("新增方法");
+	}
 }
