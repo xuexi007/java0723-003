@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/echarts.common.min.js"></script>
+</head>
+<body>
+<div id="box" style="width:4000px;height:800px;"></div>
+
+<script type="text/javascript">
+var mychart=echarts.init(document.getElementById('box'));
+
+mychart.setOption({
+
+    title:{
+       text:'新发地市场大白菜价格走势图'
+    },
+    legend:{
+      data:['最低价格','平均价格','最高价格']
+    },
+    xAxis:{
+      data:[]
+    },
+    yAxis:{},
+    series:[{
+      name:'最低价格',
+      type:'line',
+      data:[]
+    },{
+      name:'平均价格',
+      type:'line',
+      data:[]
+    },{
+      name:'最高价格',
+      type:'line',
+      data:[]
+    }]
+});
+
+mychart.showLoading();
+//定义最低价格数组
+var lowprices=[];
+var avgprices=[];
+var hprices=[];
+var dates=[];
+//发出ajax请求
+$.ajax({
+  type:'post',
+  url:'getallsc.do',
+  data:{begin_date:'2018-11-01',end_date:'2018-11-30'},
+  dataType:'json',
+  success:function(json){
+    if(json){
+      //遍历json
+      for(var i=0;i<json.length;i++){
+         lowprices.push(json[i].lowprice);
+         avgprices.push(json[i].avgprice);
+         hprices.push(json[i].hprice);
+         var time=new Date(json[i].createdate);
+         dates.push(time.getFullYear()+'-'+(time.getMonth()+1)+'-'+time.getDate())
+      }
+      //隐藏加载动画
+      mychart.hideLoading();
+      mychart.setOption({
+         xAxis:{
+           data:dates
+         },
+         series:[{
+          name:'最低价格',
+          type:'line',
+          data:lowprices
+         },{
+          name:'平均价格',
+          type:'line',
+          data:avgprices
+         },{
+          name:'最高价格',
+          type:'line',
+          data:hprices
+         }]
+      })
+    }
+  }
+
+})
+
+
+
+
+</script>
+</body>
+</html>

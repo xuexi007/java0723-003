@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.offcn.dao.ScDao">
+
+ <insert id="saves" parameterType="java.util.List">
+    insert into sc(name,lowprice,avgprice,hprice,guige,unit,createdate) values
+    <foreach collection="list" item="sc" separator=",">
+     (#{sc.name},#{sc.lowprice},#{sc.avgprice},#{sc.hprice},#{sc.guige},#{sc.unit},#{sc.createdate})
+    </foreach>
+ </insert>
+    <select id="getAllByDate" resultType="com.offcn.po.Sc">
+        SELECT * FROM sc where createdate between #{begin_date} and #{end_date}
+    </select>
+</mapper>
